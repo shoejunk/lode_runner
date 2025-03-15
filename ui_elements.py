@@ -11,6 +11,9 @@ class HUD:
         self.screen_height = SCREEN_HEIGHT
         self.update_positions()
 
+    def update_screen(self, new_screen):
+        self.screen = new_screen
+
     def update_screen_size(self, width, height):
         self.screen_width = width
         self.screen_height = height
@@ -34,6 +37,9 @@ class MenuSystem:
         self.screen_height = SCREEN_HEIGHT
         self.buttons = []
         self.update_positions()
+
+    def update_screen(self, new_screen):
+        self.screen = new_screen
 
     def update_screen_size(self, width, height):
         self.screen_width = width
@@ -74,7 +80,9 @@ def main():
                 running = False
             elif event.type == pygame.VIDEORESIZE:
                 screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
+                hud.update_screen(screen)
                 hud.update_screen_size(event.w, event.h)
+                menu_system.update_screen(screen)
                 menu_system.update_screen_size(event.w, event.h)
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if menu_system.buttons[0].collidepoint(event.pos):
@@ -92,22 +100,19 @@ def main():
         pygame.display.flip()
         clock.tick(60)
 
-    pygame.quit()
-
-    # Test HUD score display
+    # Run tests before quitting pygame
     gsm.update_score(500)
-    score_text = hud.font.render(f"Score: {gsm.score}", True, WHITE)
-    assert "500" in str(score_text), "HUD score mismatch"
+    expected_score_text = f"Score: {gsm.score}"
+    assert expected_score_text == "Score: 500", f"HUD score mismatch: {expected_score_text}"
 
-    # Test menu button positions after resize
     menu_system.update_screen_size(800, 600)
     assert menu_system.buttons[0].center == (400, 250), "Menu button position incorrect after resize"
 
-    # Test HUD positions after resize
     hud.update_screen_size(800, 600)
     assert hud.lives_pos == (700, 10), "HUD lives position incorrect after resize"
 
     print("All tests passed!")
+    pygame.quit()
 
 if __name__ == "__main__":
     main()

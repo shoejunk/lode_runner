@@ -11,16 +11,12 @@ class Tile:
         self.texture = self._load_texture()
         self.animation_frames = []
         self.current_frame = 0
-        self.animation_speed = 200  # milliseconds per frame
+        self.animation_speed = 200
         self.last_update = pygame.time.get_ticks()
         self.is_breaking = False
 
     def _determine_collision(self):
-        if self.tile_type in [TileType.GROUND, TileType.WALL, TileType.SPIKE]:
-            return True
-        elif self.tile_type in [TileType.PLATFORM, TileType.LADDER]:
-            return False
-        return False
+        return self.tile_type in [TileType.GROUND, TileType.WALL, TileType.SPIKE]
 
     def _determine_diggable(self):
         return self.tile_type == TileType.GROUND
@@ -46,8 +42,7 @@ class Tile:
                 if self.current_frame >= len(self.animation_frames):
                     self.is_breaking = False
                     return True
-                else:
-                    self.texture = self.animation_frames[self.current_frame]
+                self.texture = self.animation_frames[self.current_frame]
         return False
 
     def render(self, screen):
@@ -69,13 +64,11 @@ class Tile:
         return surface
 
 def main():
-    import pygame
-    from constants import TileType
-
     pygame.init()
     screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT))
     clock = pygame.time.Clock()
 
+    # Test initialization
     ground_tile = Tile(TileType.GROUND, (100, 100))
     assert ground_tile.collision == True
     assert ground_tile.diggable == True
@@ -88,6 +81,7 @@ def main():
     assert platform_tile.collision == False
     assert platform_tile.diggable == False
 
+    # Test breaking functionality
     ground_tile.break_tile()
     assert ground_tile.is_breaking == True
     assert len(ground_tile.animation_frames) == 3
@@ -95,6 +89,7 @@ def main():
     wall_tile.break_tile()
     assert wall_tile.is_breaking == False
 
+    # Test animation progression
     ground_tile.last_update = pygame.time.get_ticks() - 500
     ground_tile.current_frame = 0
     result = ground_tile.update()
@@ -111,17 +106,38 @@ def main():
     assert result == True
     assert ground_tile.is_breaking == False
 
-    ground_tile.render(screen)
-    pygame.display.flip()
-    pygame.time.wait(500)
+    print("All tests passed. Starting visual demo...")
 
-    print("All tests passed.")
-    print("Press any key to exit...")
-    waiting = True
-    while waiting:
+    # Demo setup
+    ground = Tile(TileType.GROUND, (100, 100))
+    wall = Tile(TileType.WALL, (200, 200))
+    platform = Tile(TileType.PLATFORM, (300, 300))
+    running = True
+    break_timer = pygame.time.get_ticks()
+
+    while running:
+        screen.fill(constants.BLACK)
+        current_time = pygame.time.get_ticks()
+
         for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                waiting = False
+            if event.type == pygame.QUIT:
+                running = False
+
+        # Auto-break ground tile after 2 seconds
+        if current_time - break_timer > 2000:
+            ground.break_tile()
+            break_timer = current_time
+
+        ground.update()
+        wall.update()
+        platform.update()
+
+        ground.render(screen)
+        wall.render(screen)
+        platform.render(screen)
+
+        pygame.display.flip()
+        clock.tick(60)
 
     pygame.quit()
 
