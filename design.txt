@@ -1,0 +1,108 @@
+Lode Runner Game Design Document
+1. Introduction
+1.1 Purpose
+This document outlines the design specifications for our Lode Runner-inspired game, focusing on core gameplay mechanics, level design, and technical architecture. It serves as a comprehensive blueprint for developers, designers, artists, and QA teams.
+
+1.2 Scope
+Core Gameplay: A single-player experience featuring precise platforming, strategic puzzle-solving, and dynamic enemy interactions.
+Platforms: Initially developed for PC with potential ports to consoles and mobile devices.
+Art & Audio: Retro-inspired pixel art with modern visual effects and a responsive audio system.
+1.3 Definitions and Abbreviations
+GDD: Game Design Document
+AI: Artificial Intelligence
+HUD: Heads-Up Display
+2. Game Overview
+2.1 Game Concept
+The game is built around fast-paced platforming and tactical puzzle-solving. Players navigate intricate levels, strategically dig through obstacles, collect treasures, and avoid or trap pursuing enemies.
+
+2.2 Genre and Setting
+Genre: Puzzle-platformer with action and strategy elements.
+Setting: A series of progressively challenging levels featuring underground environments, each designed to test the player’s dexterity and planning skills.
+2.3 Unique Selling Points
+Innovative Level Design: Dynamic environments that encourage strategic digging and multiple path options.
+Adaptive Enemy AI: Enemies with responsive behaviors that increase challenge as the game advances.
+Retro Aesthetics with Modern Enhancements: Nostalgic visuals paired with contemporary gameplay refinements.
+Custom Level Editor (Optional): Enables players to design, share, and challenge others with their own levels.
+3. Gameplay Mechanics
+3.1 Core Gameplay
+Platforming: Precise control over running, jumping, climbing, and digging within grid-based levels.
+Digging Mechanic: Players can remove blocks to create new pathways or trap enemies, dynamically altering the level.
+Treasure Collection: Scattered treasures serve as primary objectives that also contribute to the player’s score.
+Time and Scoring: Levels are timed, with bonus points awarded for efficient completion and skillful maneuvers.
+3.2 Player Mechanics
+Movement: Responsive controls for smooth navigation across platforms, ladders, and obstacles.
+Abilities: Special moves (e.g., rapid digs, temporary speed boosts) that may be unlocked or activated through power-ups.
+Lives/Health: A system that tracks player progress, with opportunities to gain extra lives or activate checkpoints.
+3.3 Enemy AI and Behavior
+Patrol Patterns: Enemies move along predefined routes but can alter their path based on player actions.
+Chase Mechanics: When alerted, enemies increase their speed and change direction to intercept the player.
+Trapping: Players can leverage the digging mechanic to block enemy paths or lead them into traps.
+3.4 Objectives and Challenges
+Primary Objective: Collect all treasures and reach the level’s exit.
+Secondary Objectives: Time-based challenges, bonus puzzles, or hidden items that enhance the score.
+Obstacles: Include moving platforms, destructible terrains, and enemy spawn points that challenge the player’s timing and strategy.
+3.5 Scoring and Progression
+Score System: Points are earned through treasure collection, enemy traps, and efficient level completion.
+Difficulty Curve: Levels gradually introduce more complex puzzles, additional enemies, and new environmental hazards.
+4. Level Design
+4.1 Level Structure
+Grid-Based Layout: Levels are composed of interconnected grids, allowing for multiple pathways and strategic choices.
+Modular Components: Each level features modular sections that can be combined to create varied challenges.
+4.2 Environment and Obstacles
+Terrain Variations: Different types of terrain (soil, rock, etc.) that influence the player’s digging and movement.
+Interactive Objects: Platforms, ladders, ropes, and breakable blocks form the core interactive elements.
+Hazards: Traps, enemy spawn areas, and unstable sections that add tension and require careful planning.
+4.3 Puzzle Elements
+Logical Challenges: Players must plan routes and manage limited digging resources to overcome obstacles.
+Environmental Puzzles: Use the surroundings to block enemies or open new pathways.
+Bonus Challenges: Hidden puzzles that offer extra rewards or unlock additional content.
+4.4 Difficulty Curve
+Early Levels: Introduce basic mechanics with generous time limits and straightforward layouts.
+Intermediate Levels: Present multiple enemies, branching pathways, and increased environmental complexity.
+Advanced Levels: Demand mastery of mechanics with rapid enemy behaviors, timed challenges, and intricate puzzles.
+5. Game Controls and User Interface
+5.1 Controls
+Keyboard/Controller Mapping:
+Movement: Arrow keys or joystick for directional movement.
+Jump: Spacebar or dedicated controller button.
+Dig/Interact: Specific key (e.g., “D”) or controller button for performing the digging action.
+Pause/Menu: Escape key or start button to access game menus.
+Customization: Support for remapping keys and adjusting sensitivity.
+5.2 HUD and Visual Cues
+Score and Timer: Constantly visible score counter and remaining time display.
+Lives/Health Indicators: Clear icons or bars showing the player’s remaining lives.
+Visual Feedback: Effects to indicate successful actions (e.g., digging, collecting treasures) and enemy proximity alerts.
+5.3 Menus and Navigation
+Main Menu: Options include “Start Game,” “Level Editor” (if implemented), “Options,” and “Exit.”
+Pause Menu: Allows players to resume, restart the level, adjust settings, or return to the main menu.
+Options Screen: Provides controls for audio levels, video settings, and gameplay adjustments.
+6. Technical Architecture
+6.1 Game Engine and Tools
+Engine: Select a 2D-friendly engine such as Unity or Godot to facilitate rapid development and cross-platform compatibility.
+Development Tools: Utilize version control (e.g., Git), integrated level editors, and automated testing suites.
+6.2 System Architecture
+Game Loop: Structured into clear update, render, and input cycles.
+Modular Design: Separate modules for physics, AI, rendering, audio, and user input to ensure maintainability and scalability.
+6.3 Asset Pipeline
+Art Assets: Organize pixel art, animation frames, and sprite sheets in a structured directory.
+Sound Assets: Integrate retro-inspired sound effects and background tracks.
+Resource Management: Efficient file handling to load assets dynamically based on level requirements.
+6.4 Physics and Collision Detection
+Grid-Based Collision: Implement collision detection tailored to grid-based level layouts.
+Dynamic Terrain Modification: Ensure real-time updates to collision maps when players dig or alter the environment.
+6.5 AI Implementation
+Pathfinding: Utilize algorithms (e.g., A* search) to allow enemies to navigate through dynamic levels.
+Behavior Trees/State Machines: Manage enemy states such as patrolling, chasing, and retreating to maintain engaging gameplay.
+7. Art and Audio Design
+7.1 Visual Style and Art Direction
+Retro Pixel Art: Emphasize clarity and simplicity in a nostalgic pixel art style with modern polish.
+Color Palette: Use a vibrant yet limited palette to differentiate terrain, obstacles, and interactive objects.
+Animation: Smooth, frame-by-frame animations to provide clear feedback for actions and transitions.
+7.2 Character and Environment Design
+Player Character: Designed for clarity in motion and responsive action, with distinct animations for running, jumping, and digging.
+Enemies: Visually distinct designs that communicate behavior, speed, and threat levels.
+Environment: Detailed yet straightforward backgrounds and obstacles that support the core gameplay without unnecessary distractions.
+7.3 Sound and Music
+Background Music: Dynamic tracks that adjust in intensity to match in-game action.
+Sound Effects: Crisp audio cues for actions like digging, enemy detection, and treasure collection.
+Audio Feedback: Utilize sound to reinforce successful player actions and alert players to nearby dangers.
