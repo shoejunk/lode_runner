@@ -93,6 +93,7 @@ class Player:
 def main():
     import pygame
     pygame.init()
+    screen = pygame.display.set_mode((1, 1))  # Create minimal window to prevent hang
 
     player = Player(0, 0)
     assert player.rect.x == 0 and player.rect.y == 0

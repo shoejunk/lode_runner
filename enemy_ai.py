@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import pygame
 from pygame.math import Vector2
 from constants import TILE_SIZE
@@ -76,59 +77,69 @@ class EnemyAI:
         if self.path:
             target = Vector2(self.path[0])
             direction = target - self.position
-            if direction.length() >= self.speed:
-                direction.scale_to_length(self.speed)
-                self.position += direction
-            else:
+            # If this is the final point in the path or the distance to target is less than or equal to speed, snap to target.
+            if len(self.path) == 1 or direction.length() <= self.speed:
                 self.position = target
                 self.path.pop(0)
+            else:
+                direction.scale_to_length(self.speed)
+                self.position += direction
 
     def _alert_group(self):
         for enemy in self.group:
-            if enemy != self:
-                enemy.alerted = True
+            enemy.alerted = True
         self.alerted = True
 
     def take_damage(self, damage):
         self.health -= damage
 
 def main():
+    pygame.init()
+
+    # Create mock pathfinder and physics handler for testing
     class MockPathfinder:
         def get_path(self, start, end):
+            # Return a simple straight-line path represented as a list containing the target.
             return [Vector2(end)]
-    class MockPhysics: pass
+    class MockPhysics:
+        pass
 
     patrol_points = [(100, 100), (300, 100)]
     pathfinder = MockPathfinder()
     physics = MockPhysics()
+
+    # Test enemy initial state
     enemy = EnemyAI((200, 100), patrol_points, pathfinder, physics)
-    enemy.group = []
+    enemy.group = []  # no group members
+    assert enemy.state == "patrol", "Test 1 failed: Initial state should be patrol"
 
-    assert enemy.state == "patrol", "Test 1 failed"
-
+    # Test transition to chase state when player is within range (Test 2)
     enemy.update((200, 150), [])
-    assert enemy.state == "chase", "Test 2 failed"
+    assert enemy.state == "chase", "Test 2 failed: State should be chase when player is close"
 
+    # Test transition back to patrol when player is out of range (Test 3)
     enemy.update((500, 500), [])
-    assert enemy.state == "patrol", "Test 3 failed"
+    assert enemy.state == "patrol", "Test 3 failed: State should be patrol when player is far"
 
+    # Test transition to retreat state when health is low (Test 4)
     enemy.health = 20
     enemy.update((200, 150), [])
-    assert enemy.state == "retreat", "Test 4 failed"
+    assert enemy.state == "retreat", "Test 4 failed: State should be retreat when health is low"
 
+    # Test group alerting during transition to chase state (Test 5)
+    enemy.health = 100
+    enemy.state = "patrol"
+    enemy.alerted = False
     enemy2 = EnemyAI((200, 200), patrol_points, pathfinder, physics)
     enemy.group = [enemy2]
-    enemy.alerted = False
     enemy.update((200, 150), [])
-    assert enemy2.alerted, "Test 5 failed"
+    assert enemy2.alerted, "Test 5 failed: Group member should be alerted when enemy enters chase state"
 
+    # Test movement along path (Test 6)
     enemy.state = "patrol"
     enemy.path = [Vector2(300, 100)]
     enemy.position = Vector2(290, 100)
     enemy._follow_path()
-    assert enemy.position == Vector2(300, 100) and not enemy.path, "Test 6 failed"
+    assert enemy.position == Vector2(300, 100) and not enemy.path, "Test 6 failed: Enemy should reach target and clear path"
 
-    print("All tests passed.")
-
-if __name__ == "__main__":
-    main()
+    # Additional tests for BehaviorTree decision logic
